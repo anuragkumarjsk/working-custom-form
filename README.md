@@ -1,4 +1,3 @@
-
 import React, { useState,useEffect } from 'react'
 
 function InputandTable(props) {
@@ -33,12 +32,12 @@ function InputandTable(props) {
                                         setTrasportationChrg(0)
                                     }
                                     else{
-                                    setTrasportationChrg(parseFloat(value))
+                                    setTrasportationChrg(value)
                                     }
                 break;    
             case 'Advance': if(Number.isNaN(value))
                                     {
-                                        setAdvance(0)
+                                        setAdvance(0.0)
                                     }
                                     else{
                                     setAdvance(value)
@@ -75,24 +74,24 @@ function InputandTable(props) {
     }
 
     useEffect(() => {
-        var Total_Amt=0
+        var Total_Amt=0.0;
         props.sv.map((item)=>{
-            Total_Amt+=item.Order_Total
+            Total_Amt= Total_Amt+item.Order_Total
         })
         // console.log(Total_Amt)
         setbillamt(Total_Amt)
     }, [order_cnt])
 
     useEffect(() => {
-
-        var temp=TrasportationChrg+billamt
+   
+        var temp=Number(TrasportationChrg) + billamt
         settotalamt(temp)
         
     }, [billamt,TrasportationChrg])
 
     useEffect(() => {
 
-       var temp=totalamt-Advance
+       var temp = totalamt-Advance
        setdueamount(temp)
     }, [totalamt,Advance])
   
@@ -103,7 +102,7 @@ function InputandTable(props) {
                 <input name="ordr_description" value={description} onChange={handlechange} placeholder="desctiption" type="text"/>
                 <input name="ordr_quantity" value={quantity} onChange={handlechange} placeholder="quantity" type="number"/>
                 <input name="ordr_rate" value={rate} onChange={handlechange} placeholder="rate" type="number"/>
-                <input name="ordr_total" value={total}  disabled type="number"/>
+                <input name="ordr_total" value={total} placeholder="total" disabled type="number"/>
             </div>
             <table style={{"width":"100vw"}}>
                 <tr>
@@ -138,20 +137,28 @@ function InputandTable(props) {
             </table>
             <div>bill amount is{billamt}</div>
             <label htmlFor="idi">Transportation charge:</label>
-            <input id="idi" name="TrasportationChrg" value={TrasportationChrg || 0} onChange={handlechange} placeholder="trasport" type="number"/>
-            <label htmlFor="idm">Total Amt</label>
-            <input id="idm" value={totalamt} type="number" disabled/>
+            <input id="idi" name="TrasportationChrg" value={TrasportationChrg || 0} onChange={handlechange} placeholder="transport" type="number"/>
+           <div>Total Amt is....{totalamt}</div>
             <div>
             <label htmlFor="ids">Advance charge:</label>
             <input id="ids" name="Advance" value={Advance || 0} onChange={handlechange} placeholder="advance" type="number"/>
-            <div>Due amount is{dueamount}</div>
+            <div>Due amount is...{dueamount}</div>
             </div>
+        
             {order_cnt}
+         
+
+            <div>{billamt            }</div>        
+            <div>{TrasportationChrg  }</div>
+            <div>{totalamt           }</div>
+            <div>{Advance            }</div>
+            <div>{dueamount          }</div>
         </>
     )
 }
 
 export default InputandTable
+
 
 
 //.............................................................................................................................................
